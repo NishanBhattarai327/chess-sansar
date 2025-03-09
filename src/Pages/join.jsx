@@ -55,7 +55,7 @@ const JoinPage = () => {
 
         games_socket.current.onmessage = (event) => {
             const message = JSON.parse(event.data);
-            console.log("Recieved Game list: message: ", message);
+            // console.log("Recieved Game list: message: ", message);
             handleGamesWebSocketMessage(message);
         };
 
@@ -112,14 +112,14 @@ const JoinPage = () => {
         join_socket.current.onmessage = (event) => {
             const message = JSON.parse(event.data);
             if (message.message.info === "joined" || message.message.info === "reconnected") {
-                console.log("joined or reconnected: join_socket:: ", message);
+                // console.log("joined or reconnected: join_socket:: ", message);
                 navigate(`/online/${roomid}`, { state: { isActive: true } });
                 join_socket.current.close();
             }
             if (message.message.info === 'invalid') {
                 setError(message.message.error);
             }
-            console.log("join_socket message recieved: ", message);
+            // console.log("join_socket message recieved: ", message);
         };
 
         join_socket.current.onclose = () => console.log("Join WebSocket closed");

@@ -127,7 +127,7 @@ export default function Online() {
     onMessage: (event) => {
       try {
         const message = JSON.parse(event.data);
-        console.log("WS message received: ", message);
+        // console.log("WS message received: ", message);
 
         // handle other messages
         handleWebSocketMessage(
@@ -212,10 +212,6 @@ export default function Online() {
       window.removeEventListener('load', handleLoad);
     };
   }, [roomid]);
-
-  useEffect(() => {
-    console.log("User Color: ", userColor);
-  }, [userColor]);
 
   /****************************
    * Game Action Handlers
@@ -335,7 +331,7 @@ export default function Online() {
                 {game && (
                   <Move 
                     moves={game.history()}
-                    onAbort={handleAbort} 
+                    onAbort={!gameOver ? handleAbort : undefined} 
                     onResign={!gameOver ? handleResign : undefined} 
                     onDrawReq={!gameOver ? handleDrawReq : undefined} 
                     onGoToMove={handleGoToMove}
@@ -419,7 +415,7 @@ export default function Online() {
               {game && (
                 <Move 
                   moves={game.history()}
-                  onAbort={handleAbort} 
+                  onAbort={!gameOver ? handleAbort : undefined} 
                   onResign={!gameOver ? handleResign : undefined} 
                   onDrawReq={!gameOver ? handleDrawReq : undefined} 
                   onGoToMove={handleGoToMove}

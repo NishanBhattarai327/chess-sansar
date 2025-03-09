@@ -260,6 +260,10 @@ export default function Move({
                 Draw
               </button>
             )}
+          </div>
+        )}
+        {moves.length == 0 && (
+          <div className="flex gap-1 mt-2">
             {onAbort && (
               <button
                 onClick={onAbort}

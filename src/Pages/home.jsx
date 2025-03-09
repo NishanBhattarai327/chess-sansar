@@ -23,7 +23,7 @@ const Home = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("User Data:", data);
+        // console.log("User Data:", data);
         if (data.username) {
           dispatch(setUser({ name: data.username }));
         }

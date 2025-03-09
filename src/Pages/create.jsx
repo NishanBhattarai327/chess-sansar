@@ -10,6 +10,7 @@ export default function Create() {
     const [timeFormat, setTimeFormat] = useState("blitz");
     const [customTime, setCustomTime] = useState({ base: 5, increment: 0 });
     const [isCustom, setIsCustom] = useState(false);
+    const [error, setError] = useState(null);
 
     const { roomid } = useParams();
     const socket = useRef(null);
@@ -32,9 +33,13 @@ export default function Create() {
 
         socket.current.onmessage = (event) => {
             const message = JSON.parse(event.data);
-            console.log('message received: ', message);
+            // console.log('message received: ', message);
             if (message.message.info === "created") {
                 navigate(`/online/${roomid}`);
+            }
+            if (message.message.info === 'invalid') {
+                console.error(message.message.error);
+                setError(message.message.error || "Unable to create game. It might already exist.");
             }
         };
 
@@ -44,6 +49,7 @@ export default function Create() {
 
         socket.current.onerror = (error) => {
             console.error("WebSocket error:", error);
+            setError("Connection error occurred. Please try again later.");
         };
 
         return () => {
@@ -84,6 +90,22 @@ export default function Create() {
             ${isDark ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-800'}`}>
             <div className={`p-4 sm:p-8 rounded-xl shadow-2xl w-full max-w-3xl
                 ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
+
+                {/* Error Message */}
+                {error && (
+                    <div className={`mb-6 p-4 rounded-lg border text-center ${
+                        isDark ? 'bg-red-900/30 border-red-800 text-red-200' : 'bg-red-100 border-red-300 text-red-800'
+                    }`}>
+                        <p className="font-medium text-sm sm:text-base mb-2">{error}</p>
+                        <p className="text-xs sm:text-sm">To create a new game, please return to the Connect page first.</p>
+                        <button 
+                            onClick={() => navigate('/connect')}
+                            className="mt-3 px-4 py-1.5 rounded text-xs sm:text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                        >
+                            Go to Connect Page
+                        </button>
+                    </div>
+                )}
 
                 {/* Color Selection */}
                 <div className="mb-6 sm:mb-8">
@@ -193,6 +215,7 @@ export default function Create() {
                     onClick={handleCreateGame}
                     className="w-full py-3 sm:py-4 rounded-lg bg-blue-500 text-white font-bold text-sm sm:text-base
                              hover:bg-blue-600 transition-all duration-200 transform hover:scale-[1.02]"
+                    disabled={!!error}
                 >
                     Create Game
                 </button>

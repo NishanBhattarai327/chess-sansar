@@ -213,6 +213,10 @@ export default function Online() {
     };
   }, [roomid]);
 
+  useEffect(() => {
+    console.log("User Color: ", userColor);
+  }, [userColor]);
+
   /****************************
    * Game Action Handlers
    ****************************/
@@ -256,11 +260,11 @@ export default function Online() {
                 <div className={`hidden lg:block absolute left-0 transform -translate-x-full -translate-y-1/4 ${userColor === 'white' ? 'order-first' : 'order-last'}`}>
                   <div className="transform rotate-90 origin-top-right translate-y-full">
                     <PlayerInfo 
-                      player={userColor === 'white' ? player2 : player1}
-                      isCurrentTurn={!turn && ((userColor === 'white' && player2) || (userColor === 'black' && player1))}
+                      player={player1 === user ? player2 : player1}
+                      isCurrentTurn={!turn}
                       isDark={isDark}
                       image={pp}
-                      playerColor={userColor === 'white' ? 'b' : 'w'}
+                      playerColor={userColor === 'w' ? 'b' : 'w'}
                     />
                   </div>
                 </div>
@@ -270,12 +274,12 @@ export default function Online() {
                   {/* Small screen player info (top) - only visible on smaller desktop */}
                   <div className="lg:hidden w-full mb-2">
                     <PlayerInfo 
-                      player={userColor === 'white' ? player2 : player1}
-                      isCurrentTurn={!turn && ((userColor === 'white' && player2) || (userColor === 'black' && player1))}
+                      player={player1 === user ? player2 : player1}
+                      isCurrentTurn={!turn}
                       isDark={isDark}
                       image={pp}
                       isMobile={true}
-                      playerColor={userColor === 'white' ? 'b' : 'w'}
+                      playerColor={userColor === 'w' ? 'b' : 'w'}
                     />
                   </div>
                   
@@ -299,12 +303,12 @@ export default function Online() {
                   {/* Small screen player info (bottom) - only visible on smaller desktop */}
                   <div className="lg:hidden w-full mt-2">
                     <PlayerInfo 
-                      player={userColor === 'white' ? player1 : player2}
+                      player={user}
                       isCurrentTurn={turn}
                       isDark={isDark}
                       image={pp}
                       isMobile={true}
-                      playerColor={userColor === 'white' ? 'w' : 'b'}
+                      playerColor={userColor }
                     />
                   </div>
                 </div>
@@ -313,11 +317,11 @@ export default function Online() {
                 <div className={`hidden lg:block absolute right-0 transform translate-x-full translate-y-1/4 ${userColor === 'white' ? 'order-last' : 'order-first'}`}>
                   <div className="transform -rotate-90 origin-bottom-left -translate-y-full">
                     <PlayerInfo 
-                      player={userColor === 'white' ? player1 : player2}
+                      player={user}
                       isCurrentTurn={turn}
                       isDark={isDark}
                       image={pp}
-                      playerColor={userColor === 'white' ? 'w' : 'b'}
+                      playerColor={userColor}
                     />
                   </div>
                 </div>
@@ -372,7 +376,7 @@ export default function Online() {
                   isDark={isDark}
                   image={pp}
                   isMobile={true}
-                  playerColor={userColor === 'white' ? 'b' : 'w'}
+                  playerColor={userColor === 'w' ? 'b' : 'w'}
                 />
               </div>
               
@@ -404,7 +408,7 @@ export default function Online() {
                   isDark={isDark}
                   image={pp}
                   isMobile={true}
-                  playerColor={userColor === 'white' ? 'w' : 'b'}
+                  playerColor={userColor}
                 />
               </div>
             </div>
